@@ -23,7 +23,7 @@ touch main.tf
 
 Open the file for edit.
 
-In the file, create a terraform block to specify that "random" is a required provider.  We also specify that we want to use version 0.15.0 or above for the Terraform version.
+In the file, create a terraform block to specify that "random" is a required provider.  We also specify that we want to use version 1.0.0 or above for the Terraform version.
 
 ```
 terraform {
