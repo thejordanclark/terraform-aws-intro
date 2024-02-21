@@ -13,9 +13,9 @@ Go the Terraform registry (https://registry.terraform.io/search/modules?provider
 
 The module we want to use in this lab is at:
 
-* https://registry.terraform.io/modules/terraform-aws-modules/dynamodb-table/aws/1.0.0
+* https://registry.terraform.io/modules/terraform-aws-modules/dynamodb-table/aws/4.0.0
 
-Be sure to select version 1.1.0.
+Be sure to select version 4.0.0.
 
 Look through the module documentation to see how it should be used.  Look at the inputs section to see what input arguments are required versus optional. (Actually, some of the required variables are not really required.)
 
@@ -26,7 +26,7 @@ Using the module documentation as a guide, add a call to the module to create a 
 * No range key
 * Table name is "terraform-labs-kvstore"
 
-Specify the version explicitly as "1.1.0" since that is what this lab was based on.
+Specify the version explicitly as "4.0.0" since that is what this lab was based on.
 
 Compare your code to the solution below (or in the database.tf file in the solution folder).
 
@@ -37,7 +37,7 @@ Compare your code to the solution below (or in the database.tf file in the solut
 ```
 module "dynamodb" {
   source  = "terraform-aws-modules/dynamodb-table/aws"
-  version = "1.1.0"
+  version = "4.0.0"
 
   name     = "terraform-labs-kvstore"
   hash_key = "Property"
