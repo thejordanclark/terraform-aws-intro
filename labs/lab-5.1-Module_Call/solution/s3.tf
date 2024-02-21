@@ -21,14 +21,25 @@ resource "aws_s3_bucket" "lab_bucket" {
   bucket_prefix = "terraform-labs-${each.key}-"
 }
 
-resource "aws_s3_bucket_acl" "lab_bucket_acl" {
+resource "aws_s3_bucket_ownership_controls" "lab_bucket" {
+  for_each = local.application_buckets
+
+  bucket = aws_s3_bucket.lab_bucket[each.key].id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "lab_bucket" {
   for_each = local.application_buckets
 
   bucket = aws_s3_bucket.lab_bucket[each.key].id
   acl    = each.value.acl
+  depends_on = [ aws_s3_bucket_ownership_controls.lab_bucket ]
 }
 
-resource "aws_s3_bucket_versioning" "lab_bucket_versioning" {
+resource "aws_s3_bucket_versioning" "lab_bucket" {
   for_each = local.application_buckets
 
   bucket = aws_s3_bucket.lab_bucket[each.key].id
@@ -44,9 +55,20 @@ resource "aws_s3_bucket" "archive" {
   bucket_prefix = "terraform-labs-archives-"
 }
 
-resource "aws_s3_bucket_acl" "archive_acl" {
+resource "aws_s3_bucket_ownership_controls" "archive" {
+  count = local.archiving_enabled ? 1 : 0
+
+  bucket = aws_s3_bucket.archive[0].id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "archive" {
   count = local.archiving_enabled ? 1 : 0
 
   bucket = element(aws_s3_bucket.archive.*.id, 0)
   acl    = "private"
+  depends_on = [ aws_s3_bucket_ownership_controls.archive ]
 }
