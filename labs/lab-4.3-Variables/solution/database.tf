@@ -60,7 +60,7 @@ resource "aws_db_instance" "lab-database" {
   kms_key_id           = data.aws_kms_key.lab.arn
   multi_az             = false
   identifier           = "terraform-labs-database"
-  name                 = var.db_name
+  db_name              = var.db_name
   username             = "dbadmin"
   password             = aws_ssm_parameter.dbpassword.value
   skip_final_snapshot  = true

@@ -82,7 +82,7 @@ resource "aws_db_instance" "lab-database" {
   kms_key_id           = data.aws_kms_key.lab.arn
   multi_az             = false
   identifier           = "terraform-labs-database"
-  name                 = "appdb"
+  db_name              = "appdb"
   username             = "dbadmin"
   password             = "Awstfl4b$"
   skip_final_snapshot  = true

@@ -48,9 +48,9 @@ variable "db_name" {
 
 Now, use a variable reference to replace the corresponding target expressions in the configuration files.  There should be three places:
 
-- Set the region local value in "main.tf" with `var.region`
-- Set the key_name value for aws_instance in "bastion.tf" with `var.vm_keypair_name`
-- Set the name value for aws_db_instance in "database.tf" with `var.db_name`
+- Set the `region` local value in "main.tf" with `var.region`
+- Set the `key_name` value for aws_instance in "bastion.tf" with `var.vm_keypair_name`
+- Set the `db_name` value for aws_db_instance in "database.tf" with `var.db_name`
 
 Run terraform validate to check for errors.
 
