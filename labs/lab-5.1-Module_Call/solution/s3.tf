@@ -9,20 +9,32 @@ locals {
       versioning = false
     },
     feeds = {
-      acl        = "public-read"
+      acl        = "private"
       versioning = true
     }
   }
 }
 
-resource "aws_s3_bucket" "lab-bucket" {
+resource "aws_s3_bucket" "lab_bucket" {
   for_each = local.application_buckets
 
   bucket_prefix = "terraform-labs-${each.key}-"
-  acl           = each.value.acl
+}
 
-  versioning {
-    enabled = each.value.versioning
+resource "aws_s3_bucket_acl" "lab_bucket_acl" {
+  for_each = local.application_buckets
+
+  bucket = aws_s3_bucket.lab_bucket[each.key].id
+  acl    = each.value.acl
+}
+
+resource "aws_s3_bucket_versioning" "lab_bucket_versioning" {
+  for_each = local.application_buckets
+
+  bucket = aws_s3_bucket.lab_bucket[each.key].id
+
+  versioning_configuration {
+    status = each.value.versioning ? "Enabled" : "Suspended"
   }
 }
 
@@ -30,5 +42,11 @@ resource "aws_s3_bucket" "archive" {
   count = local.archiving_enabled ? 1 : 0
 
   bucket_prefix = "terraform-labs-archives-"
-  acl           = "private"
+}
+
+resource "aws_s3_bucket_acl" "archive_acl" {
+  count = local.archiving_enabled ? 1 : 0
+
+  bucket = element(aws_s3_bucket.archive.*.id, 0)
+  acl    = "private"
 }
