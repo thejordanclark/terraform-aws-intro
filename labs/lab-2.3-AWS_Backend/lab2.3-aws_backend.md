@@ -44,7 +44,7 @@ terraform {
   required_providers {
     random = {
       source  = "hashicorp/random"
-      version = "~> 2.3.0"
+      version = "~> 3.6"
     }
   }
   backend "s3" {
@@ -52,7 +52,7 @@ terraform {
     key            = "terraform.labs.tfstate"
     dynamodb_table = "terraform-state-lock"
   }
-  required_version = "~> 1.0.0"
+  required_version = ">= 1.3.0"
 }
 ```
 
